@@ -1,0 +1,12 @@
+const express=require('express')
+const router=express.Router()
+const ListQ=require("../controller/listquestion.controller")
+const {accesstoken} = require('../middleware/auth.middleware')
+const { accessTeachertoken } = require('../middleware/Teacher.middleware')
+router.post("/",accessTeachertoken,ListQ.AddlistQ)
+router.post("/GetD/:id",ListQ.getKT)
+router.post("/Page/Get/:id",ListQ.getpage)
+router.put("/:id",accessTeachertoken,ListQ.updateCH)
+router.delete("/:id",accessTeachertoken,ListQ.deleteCH)
+router.delete("/Exam/:id",accessTeachertoken,ListQ.deleteKT)
+module.exports=router

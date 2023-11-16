@@ -1,0 +1,12 @@
+const express=require('express')
+const router=express.Router()
+const answerst=require("../controller/answerStudent.controller")
+const {accesstoken} = require('../middleware/auth.middleware')
+const { accessTeachertoken } = require('../middleware/Teacher.middleware')
+router.post("/",accesstoken,answerst.AddanswerSt)
+router.get("/:id",accesstoken,answerst.getidanswerSt)
+router.post("/Result/BT/:id",accesstoken,answerst.getResultBT)
+router.post("/GetHSBT/",accesstoken,answerst.getIDBTanswerSt)
+router.put("/:id",accesstoken,answerst.updateanswerSt)
+router.delete("/:id",accesstoken,answerst.deleteanswerSt)
+module.exports=router

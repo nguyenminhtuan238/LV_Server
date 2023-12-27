@@ -48,13 +48,21 @@ exports.deleteclass=async (req,res)=>{
 exports.getclassALL=async (req,res)=>{
     try {
         const {page}=req.body
-        const sizepage=5
+        const sizepage=3
         const skippage=(page-1)*sizepage
-        const getALL=await db.setup(
-            `SELECT * FROM lop  `,[])
-        const get= await db.setup(
-            `SELECT * FROM lop  LIMIT ${sizepage} OFFSET ${skippage} `,[])
-        return  res.json({get:get,page:Math.ceil(getALL.length/sizepage),message:"tim thanh cong"})
+        if(page===undefined){
+           
+            const get= await db.setup(
+                `SELECT * FROM lop `,[])
+            return  res.json({get:get,message:"tim thanh cong"})
+        }else{
+            const getALL=await db.setup(
+                `SELECT * FROM lop  `,[])
+            const get= await db.setup(
+                `SELECT * FROM lop  LIMIT ${sizepage} OFFSET ${skippage} `,[])
+            return  res.json({get:get,page:Math.ceil(getALL.length/sizepage),message:"tim thanh cong"})
+        }
+       
     } catch (error) {
         console.log(error)
         res.status(500).json({success:false,message:"loi server"})

@@ -41,7 +41,18 @@ exports.getpointid=async (req,res)=>{
     try {
         
         const get= await db.setup(
-            `SELECT * FROM diem  WHERE ID_D=? `,[req.params.point])
+            `SELECT DiemThi,ID_D,Ten_Mon FROM diem   INNER JOIN mon ON diem.ID_M=mon.ID_M  WHERE ID_HS=? `,[req.params.id])
+        return  res.json({get:get,message:"tim thanh cong"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({success:false,message:"loi server"})
+    }
+}
+exports.getpointSearch=async (req,res)=>{
+    try {
+        const {Search,ID_HS}=req.body
+        const get= await db.setup(
+            `SELECT DiemThi,ID_D,Ten_Mon FROM diem   INNER JOIN mon ON diem.ID_M=mon.ID_M  WHERE ID_HS=? AND mon.Ten_Mon LIKE '${Search+"%"}'`,[ID_HS])
         return  res.json({get:get,message:"tim thanh cong"})
     } catch (error) {
         console.log(error)

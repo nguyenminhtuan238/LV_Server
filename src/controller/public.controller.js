@@ -21,3 +21,36 @@ res.download(filePath, fileName, function(err) {
   }
 });
 }
+exports.DownloadClass=(req,res)=>{
+  const filePath = path.join(__dirname, '../public/Class.xlsx');
+const fileName = 'Class.xlsx';
+res.download(filePath, fileName, function(err) {
+  if (err) {
+    console.error('Error downloading file:', err.message);
+  } else {
+    console.log('File downloaded successfully.');
+  }
+});
+}
+exports.DownloadDeleteuser=(req,res)=>{
+  const filePath = path.join(__dirname, '../public/Deleteuser.xlsx');
+const fileName = 'Deleteuser.xlsx';
+res.download(filePath, fileName, function(err) {
+  if (err) {
+    console.error('Error downloading file:', err.message);
+  } else {
+    console.log('File downloaded successfully.');
+  }
+});
+}
+exports.DownloadDeleteTe=(req,res)=>{
+  const filePath = path.join(__dirname, '../public/DeleteTe.xlsx');
+const fileName = 'DeleteTe.xlsx';
+res.download(filePath, fileName, function(err) {
+  if (err) {
+    console.error('Error downloading file:', err.message);
+  } else {
+    console.log('File downloaded successfully.');
+  }
+});
+}

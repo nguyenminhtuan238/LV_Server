@@ -13,6 +13,7 @@ const upload=multer({
 
 const storageu=multer.diskStorage({
     destination:(req,file,cb)=>{
+        console.log(file)
         cb(null,'././src/public/Imageuser/')    
     },
     filename:(req,file,cb)=>{

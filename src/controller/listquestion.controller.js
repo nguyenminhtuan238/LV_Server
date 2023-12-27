@@ -71,7 +71,7 @@ exports.getpage=async (req,res)=>{
         const sizepage=5
         const skippage=(page-1)*sizepage
         const get= await db.setup(
-            `SELECT distinct danhsach_ch.ID_CH,ID_DSCH,ID_KT,cauhoi.Noidung,cauhoi.Diem,cauhoi.HinhThuc FROM danhsach_ch  INNER JOIN cauhoi ON cauhoi.ID_CH=danhsach_ch.ID_CH WHERE ID_KT=? LIMIT ${sizepage} OFFSET ${skippage}`,[req.params.id])
+            `SELECT distinct danhsach_ch.ID_CH,ID_DSCH,ID_KT,cauhoi.Noidung,cauhoi.Diem,cauhoi.HinhThuc,cauhoi.Hinh FROM danhsach_ch  INNER JOIN cauhoi ON cauhoi.ID_CH=danhsach_ch.ID_CH WHERE ID_KT=? LIMIT ${sizepage} OFFSET ${skippage}`,[req.params.id])
         return  res.json({get:get,message:"tim thanh cong"})
     } catch (error) {
         console.log(error)

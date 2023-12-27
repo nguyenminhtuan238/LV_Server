@@ -10,7 +10,7 @@ const accessTeachertoken=async (req,res,next)=>{
             if(err){
               return  res.status(410).json({success:false,message:"Token has expired"})
             }else{
-                if(data.role===2){
+                if(data.role===2 || data.role===3){
                     req.iduser=data
                     next()
                 }else{

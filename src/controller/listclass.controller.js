@@ -19,23 +19,19 @@ exports.AddlistClass=async (req,res)=>{
         res.status(500).json({success:false,message:"loi server"})
     }
 }
-// exports.updateclass=async (req,res)=>{
-//     try {
+exports.updatelistclass=async (req,res)=>{
+    try {
 
-//         const {Ten_Lop,password}=req.body
-//         const rows=await db.setup('SELECT * FROM `lop` WHERE `Ten_Lop`=? ',[Ten_Lop])
-//         if(rows.length===0 ){      
-//         const update= await db.setup(
-//             "UPDATE lop SET Ten_Lop=?,password=? WHERE ID_L=?",[Ten_Lop,password,req.params.id])
-//         return  res.json({update:update,message:"sua lop thanh cong"})
-//     }else{
-//         return res.status(403).json({ success: false, message: "Tên Lớp Đã Tồn tại" })
-//     }
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({success:false,message:"loi server"})
-//     }
-// }
+        const {ID_HS}=req.body
+       
+        const update= await db.setup(
+            "UPDATE lop_hs SET ID_HS=? WHERE ID_LHS=?",[ID_HS,req.params.id])
+            return  res.json({update:update,message:"xoa thanh cong"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({success:false,message:"loi server"})
+    }
+}
 exports.deletelistclass=async (req,res)=>{
     try {
        

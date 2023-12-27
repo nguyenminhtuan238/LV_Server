@@ -13,10 +13,10 @@ exports.Login=async (req,res)=>{
         const Refreshtoken=jwt.sign({id:rows[0].ID_users,role:rows[0].role},process.env.PASSWORD_Refreshtoken,{expiresIn:"365d"})
         return  res.json({success:true,settoken,Refreshtoken})
       }else{
-        return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+        return res.status(403).json({ success: false, mess: "Tên Tài khoản và Mặt Khẩu Không chính xác" })
       }
     }else{
-        return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+        return res.status(403).json({ success: false, mess: "Tên Tài khoản và Mặt Khẩu Không chính xác" })
     }
    } catch (error) {
     console.log(error)
@@ -36,13 +36,13 @@ exports.LoginAdmin=async (req,res)=>{
          const Refreshtoken=jwt.sign({id:rows[0].ID_users,role:rows[0].role},process.env.PASSWORD_Refreshtoken,{expiresIn:"365d"})
          return  res.json({success:true,settoken,Refreshtoken})
            }else{
-               return res.status(406).json({success:false,message:"username và password Không chính xác"})
+               return res.status(406).json({success:false,message:"Tên Tài khoản và Mặt Khẩu Không chính xác"})
            }
        }else{
-         return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+         return res.status(403).json({ success: false, mess: "Tên Tài khoản và Mặt Khẩu Không chính xác" })
        }
      }else{
-         return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+         return res.status(403).json({ success: false, mess: "Tên Tài khoản và Mặt Khẩu Không chính xác" })
      }
     } catch (error) {
      console.log(error)
@@ -62,13 +62,13 @@ exports.LoginAdmin=async (req,res)=>{
          const Refreshtoken=jwt.sign({id:rows[0].ID_users,role:rows[0].role},process.env.PASSWORD_Refreshtoken,{expiresIn:"365d"})
          return  res.json({success:true,settoken,Refreshtoken})
            }else{
-               return res.status(406).json({success:false,message:"username và password Không chính xác"})
+               return res.status(406).json({success:false,message:"Tên Tài khoản và Mặt Khẩu Không chính xác"})
            }
        }else{
-         return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+         return res.status(403).json({ success: false, mess: "Tên Tài khoản và Mặt Khẩu Không chính xác" })
        }
      }else{
-         return res.status(403).json({ success: false, mess: "username và password Không chính xác" })
+         return res.status(403).json({ success: false, mess:"Tên Tài khoản và Mặt Khẩu Không chính xác" })
      }
     } catch (error) {
      console.log(error)
@@ -125,7 +125,7 @@ exports.resetpassword=async (req,res)=>{
 exports.deleteAuth=async (req,res)=>{
     try {
             const Delete= await db.setup(
-            "DELETE FROM users  WHERE Username=?",[req.params.username])
+            "DELETE FROM users  WHERE ID_users=?",[req.params.username])
         return  res.json({Delete:Delete,message:"xoa thanh cong",success:true})
     } catch (error) {
         console.log(error)
@@ -171,6 +171,7 @@ exports.update=async (req,res)=>{
         const {Ten,Diachi,SDT,Email}=req.body
         const Hinh=req?.file?.filename
         if(Hinh===undefined){
+            
             const update= await db.setup(
                 "UPDATE  users SET TEN=?, Diachi=?,SDT=?,Email=? WHERE ID_users=?",[Ten,Diachi,SDT,Email,req.iduser.id])
             return  res.json({update:update,message:"sua thanh cong"})
@@ -198,9 +199,20 @@ exports.getuserid=async (req,res)=>{
 }
 exports.getALLHS=async (req,res)=>{
     try {
+        const {page}=req.body
+        const sizepage=5
+        const skippage=(page-1)*sizepage
+        if(page===undefined){
         const get= await db.setup(
             "SELECT ID_users ,Ten,Diachi,SDT,Email FROM users  WHERE role=1",[])
         return  res.json({get:get,message:"tim thanh cong"})
+        }else{
+            const getALL= await db.setup(
+                "SELECT ID_users ,Ten,Diachi,SDT,Email FROM users  WHERE role=1",[])    
+            const get= await db.setup(
+                `SELECT ID_users ,Ten,Diachi,SDT,Email FROM users  WHERE role=1 LIMIT ${sizepage} OFFSET ${skippage}`,[])
+            return  res.json({get:get,page:Math.ceil(getALL.length/sizepage),message:"tim thanh cong"})
+        }
     } catch (error) {
         console.log(error)
         res.status(500).json({success:false,message:"loi server"})
@@ -208,9 +220,20 @@ exports.getALLHS=async (req,res)=>{
 }
 exports.getALLGD=async (req,res)=>{
     try {
+        const {page}=req.body
+        const sizepage=5
+        const skippage=(page-1)*sizepage
+        if(page===undefined){
         const get= await db.setup(
             "SELECT ID_users,Ten FROM users  WHERE role=2",[])
         return  res.json({get:get,message:"tim thanh cong"})
+        }else{
+            const getALL= await db.setup(
+                "SELECT ID_users ,Ten,Diachi,SDT,Email FROM users  WHERE role=1",[])    
+            const get= await db.setup(
+                `SELECT  ID_users,Ten FROM users  WHERE role=2 LIMIT ${sizepage} OFFSET ${skippage}`,[])
+            return  res.json({get:get,page:Math.ceil(getALL.length/sizepage),message:"tim thanh cong"})
+        }
     } catch (error) {
         console.log(error)
         res.status(500).json({success:false,message:"loi server"})
@@ -234,3 +257,22 @@ exports.SearchHS=async (req,res)=>{
         res.status(500).json({success:false,message:"loi server"})
     }
 }
+exports.SearchGD=async (req,res)=>{
+    try {
+        const {Search,ID_user}=req.body
+        if(Search===undefined){
+            const get= await db.setup(
+                `SELECT ID_users,Ten FROM users  WHERE ID_users=? AND role=2`,[ID_user])
+            return  res.json({get:get,message:"tim thanh cong"})
+        }
+        if(ID_user===undefined){
+        const get= await db.setup(
+            `SELECT ID_users,Ten FROM users  WHERE  role=2 AND Ten LIKE '${Search+"%"}' `,[])
+        return  res.json({get:get,message:"tim thanh cong"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({success:false,message:"loi server"})
+    }
+}
+
